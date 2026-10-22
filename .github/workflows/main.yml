@@ -97,18 +97,4 @@
     # The maven arguments
     maven-args: # optional, default is 
 
-    - name: TestNG Report Action
-  # You may pin to the exact commit or the version.
-  # uses: runekit-oss/action-testng-report@3e67db2f65c858c59d425a7150fab5efba417cf7
-  uses: runekit-oss/action-testng-report@v1.4.0
-  with:
-    # Glob expression for TestNG XML report paths.
-    report_paths: # default is **/testng-results.xml
-    # Generate summary report (true/false)
-    summary_report: # optional, default is true
-    # Generate detailed report (true/false)
-    detailed_report: # optional, default is false
-    # Check name to use when creating a check run.
-    check_name: # optional, default is TestNG Test Report
-    # Fail if there are no test results found.
-    fail_if_empty: # optional, default is true
+
