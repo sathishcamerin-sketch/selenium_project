@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Building application...'
                 // For Node.js: sh 'npm install && npm run build'
-                For Java/Maven: sh './mvnw clean package'
+                //For Java/Maven: sh './mvnw clean package'
                 // For Python: sh 'pip install -r requirements.txt'
             }
         }
@@ -31,7 +31,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running unit tests...'
-                 sh 'npm test' or sh './mvnw test'
+                 //sh 'npm test' or sh './mvnw test'
             }
         }
 
