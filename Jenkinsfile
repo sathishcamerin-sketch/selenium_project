@@ -1,58 +1,46 @@
+
 pipeline {
-    agent any 
+    agent any
 
-    // Trigger pipeline automatically when changes are pushed to GitHub
-    triggers {
-        githubPush()
-    }
-
-    environment {
-        // Example: Referencing a credential stored in Jenkins
-        DB_CREDENTIALS = credentials('my-database-credentials-id')
+    options {
+        timestamps()
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout GitHub Code') {
             steps {
-                // Clones the GitHub repository automatically if configured via SCM
-                checkout scm
+                echo 'GitHub code downloaded successfully'
             }
         }
 
-        stage('Build') {
+        stage('Check Java and Maven') {
             steps {
-                echo 'Building application...'
-                // For Node.js: sh 'npm install && npm run build'
-                //For Java/Maven: sh './mvnw clean package'
-                // For Python: sh 'pip install -r requirements.txt'
+                bat 'java -version'
+                bat '"C:\\tool\\apache-maven-3.9.16\\bin\\mvn.cmd" -version'
             }
         }
 
-        stage('Test') {
+        stage('Run Selenium TestNG Tests') {
             steps {
-                echo 'Running unit tests...'
-                 //sh 'npm test' or sh './mvnw test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
+                bat '"C:\\tool\\apache-maven-3.9.16\\bin\\mvn.cmd" -B clean test'
             }
         }
     }
 
-    // Post-execution blocks to handle notifications or cleanup
     post {
         always {
-            echo 'Pipeline has finished execution.'
-            cleanWs() // Cleans the workspace directory after the run
+            junit(
+                testResults: '**/target/surefire-reports/*.xml',
+                allowEmptyResults: true
+            )
         }
+
         success {
-            echo 'Build succeeded! Sending notification...'
+            echo 'Build and Selenium tests completed successfully!'
         }
+
         failure {
-            echo 'Build failed! Check the console output.'
+            echo 'Build failed. Check the Console Output.'
         }
     }
 }
